@@ -1,0 +1,29 @@
+package main
+
+import "fmt"
+
+func main() {
+	var name string = "John"
+	var p *string = &name
+	fmt.Printf("Name: %v\n", name)
+	fmt.Printf("Access using pointer: %v\n", &p)
+	fmt.Printf("Access using derefrence: %v\n", *p)
+	modify(p)
+	fmt.Printf("Modified Name: %v\n", name)
+	s1 := new(fruits)
+	fmt.Println("Before Modifying: ")
+	fmt.Println(*s1)
+	s1.colour = "pink"
+	s1.Flavour = "sweet"
+	fmt.Println("After modifying: ")
+	fmt.Println(*s1)
+}
+
+func modify(p *string) {
+	*p = "Doe"
+}
+
+type fruits struct {
+	Flavour string
+	colour  string
+}
