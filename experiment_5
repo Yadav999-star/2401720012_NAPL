@@ -1,0 +1,42 @@
+package main
+
+import "fmt"
+
+func sqare(ch chan int, num int) {
+	fmt.Println("sqare go routein channing sarted: ")
+	fmt.Println("Enter the number: ")
+
+	ch <- num * num
+}
+
+func cube(ch chan int, num int) {
+	fmt.Println("cube go routein channing sarted: ")
+	fmt.Println("Enter the number: ")
+	ch <- num * num * num
+}
+
+func fibnaci(ch chan int, num int) {
+	fmt.Println("fibnaci go routein channing sarted: ")
+	fmt.Println("Enter the number: ")
+	var n int
+	fmt.Scan(&n)
+	x := 0
+	y := 1
+	for i := 0; i < n; i++ {
+		fmt.Println(x, x+y)
+	}
+}
+
+func main() {
+	ch := make(chan int)
+	var num int
+	fmt.Println("Enter the number: ")
+	fmt.Scan(&num)
+	go sqare(ch, num)
+	go cube(ch, num)
+	go fibnaci(ch, num)
+
+	for i := 0; i < 3; i++ {
+		fmt.Println("Result:", <-ch)
+	}
+}
