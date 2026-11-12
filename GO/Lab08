@@ -1,1 +1,22 @@
 
+[<AbstractClass>]
+type Shape() =
+    abstract member Area : unit -> float
+
+type Circle() =
+    inherit Shape()
+    override this.Area() = 3.14 * 5.0 * 5.0
+
+type Rectangle() =
+    inherit Shape()
+    override this.Area() = 4.0 * 6.0
+
+[<EntryPoint>]
+let main argv =
+    let c = Circle()
+    let r = Rectangle()
+
+    printfn "Circle Area = %f" (c.Area())
+    printfn "Rectangle Area = %f" (r.Area())
+
+    0
