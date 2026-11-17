@@ -1,0 +1,68 @@
+package main
+
+import (
+	"fmt"
+	"strings"
+)
+
+type Item struct {
+	ID       int
+	Name     string
+	Quantity int
+	Price    float64
+}
+
+type Inventory struct {
+	Items []Item
+}
+
+func validate(item Item) error {
+	if item.ID <= 0 {
+		return fmt.Errorf("enter positive item")
+	}
+	if strings.TrimSpace(item.Name) == "" {
+		return fmt.Errorf("item name cannot be empty")
+	}
+	if item.Quantity < 0 || item.Price < 0 {
+		return fmt.Errorf("quantity cannot be negative")
+	}
+	return nil
+}
+
+func (inv *Inventory) Add(item Item) error {
+	if err := validate(item); err != nil {
+		return err
+	}
+	for _, existing := range inv.Items {
+		if existing.ID == item.ID {
+			return fmt.Errorf("item with ID %d already exists", item.ID)
+		}
+	}
+	item.Name = strings.TrimSpace(item.Name)
+	inv.Items = append(inv.Items, item)
+	return nil
+}
+
+func (inv *Inventory) Update(item Item) error {
+	if err := validate(item); err != nil {
+		return err
+	}
+	for i, existing := range inv.Items {
+		if existing.ID == item.ID {
+			item.Name = strings.TrimSpace(item.Name)
+			inv.Items[i] = item
+			return nil
+		}
+	}
+	return fmt.Errorf("item with ID %d not found", item.ID)
+}
+
+func (inv *Inventory) Delete(id int) error {
+	for i, item := range inv.Items {
+		if item.ID == id {
+			inv.Items = append(inv.Items[:i], inv.Items[i+1:]...)
+			return nil
+		}
+	}
+	return fmt.Errorf("item with ID %d not found", id)
+}
